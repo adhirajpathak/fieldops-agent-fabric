@@ -1,0 +1,3 @@
+{"id": "billing-refund", "query": "Customer wants a $2000 refund for duplicate charge", "customer_id": "cust-1001", "expected_category": "billing", "answer_must_contain": ["manager", "ticket"]}
+{"id": "incident-outage", "query": "Enterprise customer reports us-central1 outage affecting payments", "customer_id": "cust-1001", "expected_category": "incident", "answer_must_contain": ["SRE", "ticket"]}
+{"id": "general-question", "query": "How do I reset my API key?", "customer_id": "cust-1002", "expected_category": "general", "answer_must_contain": []}
