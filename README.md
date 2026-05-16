@@ -4,7 +4,9 @@
 
 > *Scenario:* A B2B SaaS company needs an AI copilot that triages support requests, grounds answers in internal policy (RAG), acts on legacy CRM/ticketing APIs, and ships with evaluation + observability suitable for security review.
 
-[![CI](https://github.com/YOUR_USERNAME/fieldops-agent-fabric/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/fieldops-agent-fabric/actions)
+**Live demo:** https://fieldops-agent-fabric-901806117918.us-central1.run.app/docs
+
+[![CI](https://github.com/adhirajpathak/fieldops-agent-fabric/actions/workflows/ci.yml/badge.svg)](https://github.com/adhirajpathak/fieldops-agent-fabric/actions)
 
 ## Why this maps to the FDE role
 
@@ -37,7 +39,7 @@ flowchart LR
 ## Quick start (no cloud credentials)
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/fieldops-agent-fabric.git
+git clone https://github.com/adhirajpathak/fieldops-agent-fabric.git
 cd fieldops-agent-fabric
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev,gcp]"   # Python 3.11+
