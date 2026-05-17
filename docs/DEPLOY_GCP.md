@@ -80,7 +80,7 @@ gcloud run deploy fieldops-agent-fabric \
   --memory=2Gi \
   --cpu=2 \
   --timeout=300 \
-  --set-env-vars="LLM_PROVIDER=vertex,GOOGLE_CLOUD_PROJECT=${PROJECT_ID},GOOGLE_CLOUD_REGION=${REGION},VERTEX_MODEL=gemini-2.0-flash,OTEL_EXPORT_GCP=true"
+  --set-env-vars="LLM_PROVIDER=vertex,GOOGLE_CLOUD_PROJECT=${PROJECT_ID},GOOGLE_CLOUD_REGION=${REGION},VERTEX_MODEL=gemini-2.5-flash,OTEL_EXPORT_GCP=true"
 ```
 
 Notes:
@@ -94,7 +94,8 @@ Notes:
 export URL=$(gcloud run services describe fieldops-agent-fabric \
   --region="$REGION" --format='value(status.url)')
 
-curl -s "${URL}/healthz" | jq
+# Cloud Run reserves /healthz at the edge — use /health after deploy
+curl -s "${URL}/health" | jq
 
 curl -s -X POST "${URL}/v1/support" \
   -H 'Content-Type: application/json' \

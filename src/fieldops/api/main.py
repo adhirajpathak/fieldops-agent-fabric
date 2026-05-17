@@ -2,13 +2,17 @@
 
 from __future__ import annotations
 
+import logging
+
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
+
+logger = logging.getLogger(__name__)
 
 from fieldops.agents.graph import run_support_workflow
 from fieldops.config import get_settings
 from fieldops.observability.tracing import init_tracing
-from fieldops.rag.ingest import ingest_directory
+from fieldops.rag.retriever import KnowledgeRetriever
 
 app = FastAPI(
     title="FieldOps Agent Fabric",
@@ -30,15 +34,38 @@ class SupportResponse(BaseModel):
     reflection_notes: str | None = None
 
 
+_rag_ready = False
+
+
 @app.on_event("startup")
 def startup() -> None:
-    init_tracing()
-    ingest_directory()
+    """Keep startup fast — RAG index is baked into the Docker image for Cloud Run."""
+    global _rag_ready
+    try:
+        init_tracing()
+    except Exception as exc:
+        logger.warning("Tracing init skipped: %s", exc)
+    try:
+        _rag_ready = KnowledgeRetriever().document_count > 0
+    except Exception as exc:
+        logger.warning("RAG check failed: %s", exc)
 
 
+@app.get("/")
+def root() -> dict:
+    return {
+        "service": get_settings().otel_service_name,
+        "health": "/health",
+        "docs": "/docs",
+        "rag_ready": _rag_ready,
+    }
+
+
+@app.get("/health")
 @app.get("/healthz")
 def healthz() -> dict:
-    return {"status": "ok", "service": get_settings().otel_service_name}
+    # Note: Cloud Run reserves /healthz at the edge (returns Google 404). Use /health on Run.
+    return {"status": "ok", "service": get_settings().otel_service_name, "rag_ready": _rag_ready}
 
 
 @app.post("/v1/support", response_model=SupportResponse)

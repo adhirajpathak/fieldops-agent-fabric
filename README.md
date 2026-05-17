@@ -4,7 +4,8 @@
 
 > *Scenario:* A B2B SaaS company needs an AI copilot that triages support requests, grounds answers in internal policy (RAG), acts on legacy CRM/ticketing APIs, and ships with evaluation + observability suitable for security review.
 
-**Live demo:** https://fieldops-agent-fabric-901806117918.us-central1.run.app/docs
+**Try it locally:** `make api` → http://localhost:8080/docs (no cloud credentials required)  
+**Deploy to GCP:** [docs/DEPLOY_GCP.md](docs/DEPLOY_GCP.md)
 
 [![CI](https://github.com/adhirajpathak/fieldops-agent-fabric/actions/workflows/ci.yml/badge.svg)](https://github.com/adhirajpathak/fieldops-agent-fabric/actions)
 

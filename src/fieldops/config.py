@@ -1,3 +1,4 @@
+import os
 from functools import lru_cache
 from typing import Literal
 
@@ -10,7 +11,7 @@ class Settings(BaseSettings):
     llm_provider: Literal["vertex", "openai", "mock"] = "mock"
     google_cloud_project: str | None = None
     google_cloud_region: str = "us-central1"
-    vertex_model: str = "gemini-2.0-flash"
+    vertex_model: str = "gemini-2.5-flash"
     openai_api_key: str | None = None
     openai_model: str = "gpt-4o-mini"
 
@@ -21,7 +22,8 @@ class Settings(BaseSettings):
     otel_export_gcp: bool = False
 
     api_host: str = "0.0.0.0"
-    api_port: int = 8080
+    # Cloud Run sets PORT; fall back to 8080 for local dev
+    api_port: int = int(os.environ.get("PORT", "8080"))
 
     # LLM-native cost assumptions (USD per 1M tokens) for ROI dashboards
     cost_per_1m_input_tokens: float = 0.15
